@@ -1,15 +1,27 @@
 'use client';
 
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 
 interface ProvidersProps {
   children: ReactNode;
 }
 
 const Providers: FC<ProvidersProps> = ({ children }) => {
-  const queryClient = new QueryClient();
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    },
+  }));
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+    </QueryClientProvider>
+  );
 };
 
 export default Providers;
