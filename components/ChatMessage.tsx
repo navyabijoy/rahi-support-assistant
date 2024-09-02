@@ -2,6 +2,7 @@
 
 import { FC, HTMLAttributes, useEffect, memo } from 'react'
 import { cn } from '@/lib/utils'
+import MarkdownLite from './MarkdownLite'
 
 interface Message {
   id: string
@@ -46,18 +47,17 @@ const MessageItem = memo<{ message: Message }>(({ message }) => {
       })}>
         <div
           className={cn(
-            'flex flex-col space-y-2 text-sm max-w-xs mx-2 overflow-x-hidden rounded-lg p-3',
+            'flex flex-col space-y-2 text-sm max-w-xs mx-2 overflow-x-hidden rounded-2xl p-2',
             {
               'bg-blue-600 text-white': message.isUserMessage,
               'bg-gray-200 text-gray-900': !message.isUserMessage,
             }
           )}
-        >
+        >  
           {message.isLoading ? (
             <span>Loading...</span>
           ) : (
-            <span>{message.text}</span>
-          )}
+              <MarkdownLite text={message.text} />          )}
         </div>
       </div>
     </div>

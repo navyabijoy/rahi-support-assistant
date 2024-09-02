@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   })
 
   const payload: OpenRouterStreamPayload = {
-    model: 'meta-llama/llama-3.1-8b-instruct:free',
+    model: 'qwen/qwen-2-7b-instruct:free',
     messages: outboundMessages,
     temperature: 0.4,
     top_p: 1,
