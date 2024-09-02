@@ -1,8 +1,9 @@
-import Image from "next/image";
+import Chat from '@/components/Chat'
 
 export default function Home() {
   return (
-      <main className='absolute inset-0 flex justify-center items-center'> 
-      Website Content</main>
-  );
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <Chat />
+    </main>
+  )
 }
