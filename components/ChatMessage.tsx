@@ -1,9 +1,8 @@
 'use client'
-
-import { FC, HTMLAttributes, useEffect, memo } from 'react'
+import React, { FC, HTMLAttributes, useEffect, memo } from 'react'
 import { cn } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
 import MarkdownLite from './MarkdownLite'
-
 interface Message {
   id: string
   isLoading: boolean
@@ -40,6 +39,32 @@ const ChatMessage: FC<ChatMessageProps> = ({ className, messages = [], ...props 
 
 const MessageItem = memo<{ message: Message }>(({ message }) => {
   console.log('Rendering message:', message)
+
+  const formatText = (text: string) => {
+    // Split the text into lines
+    const lines = text.split('\n')
+    
+    return lines.map((line, index) => {
+      // Check if the line is a numbered point
+      const pointMatch = line.match(/^(\d+)\.\s(.*)/)
+      if (pointMatch) {
+        const [, number, content] = pointMatch
+        // Format the content, wrapping bold text in <strong> tags
+        const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        return (
+          <React.Fragment key={index}>
+            <p className="mb-2">
+              <span className="font-bold mr-2">{number}.</span>
+              <span dangerouslySetInnerHTML={{ __html: formattedContent }} />
+            </p>
+          </React.Fragment>
+        )
+      }
+      // For non-point lines, just wrap bold text
+      return <p key={index} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+    })
+  }
+
   return (
     <div className='chat-message'>
       <div className={cn('flex items-end', {
@@ -50,14 +75,18 @@ const MessageItem = memo<{ message: Message }>(({ message }) => {
             'flex flex-col space-y-2 text-sm max-w-xs mx-2 overflow-x-hidden rounded-2xl p-2',
             {
               'bg-blue-600 text-white': message.isUserMessage,
-              'bg-gray-200 text-gray-900': !message.isUserMessage,
+              'bg-zinc-100 text-gray-900': !message.isUserMessage,
             }
-          )}
+          )} 
         >  
           {message.isLoading ? (
-            <span>Loading...</span>
+            <div className='flex items-center justify-center w-full h-full'>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="ml-2">Generating response...</span>
+            </div>
           ) : (
-              <MarkdownLite text={message.text} />          )}
+            <MarkdownLite text={message.text}/>
+          )}
         </div>
       </div>
     </div>
