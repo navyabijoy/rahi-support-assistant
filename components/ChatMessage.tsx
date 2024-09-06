@@ -41,15 +41,14 @@ const MessageItem = memo<{ message: Message }>(({ message }) => {
   console.log('Rendering message:', message)
 
   const formatText = (text: string) => {
-    // Split the text into lines
     const lines = text.split('\n')
     
     return lines.map((line, index) => {
-      // Check if the line is a numbered point
+      //the line is a numbered point
       const pointMatch = line.match(/^(\d+)\.\s(.*)/)
       if (pointMatch) {
         const [, number, content] = pointMatch
-        // Format the content, wrapping bold text in <strong> tags
+        // Formats the content, wrapping bold text in <strong> tags
         const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         return (
           <React.Fragment key={index}>
