@@ -13,7 +13,6 @@ export function formatTimestamp(date: Date): string {
 }
 
 export function sanitizeInput(input: string): string {
-  // Basic sanitization, you might want to use a library for more comprehensive sanitization
   return input.replace(/[<>&'"]/g, (char) => {
     switch (char) {
       case '<': return '&lt;'
